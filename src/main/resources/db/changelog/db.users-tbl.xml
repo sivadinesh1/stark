@@ -1,0 +1,63 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createUserTable">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(45)"/>
+            <column name="password" type="varchar(255)"/>
+
+            <column name="firstname" type="varchar(45)"/>
+            <column name="lastname" type="varchar(45)"/>
+
+            <column name="center_id" type="BIGSERIAL"/>
+            <column name="corporate_id" type="BIGSERIAL"/>
+            <column name="mobilenumber" type="varchar(45)"/>
+            <column name="profileimgurl" type="varchar(250)"/>
+            <column name="social_id" type="varchar(50)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="gender" type="varchar(20)"/>
+            <column name="dob" type="varchar(50)"/>
+            <column name="signup_mode" type="varchar(20)"/>
+            <column name="verified" defaultValue="N" type="varchar(1)"/>
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="username-uni" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addUniqueConstraint columnNames="username" constraintName="uname_uniq" tableName="users"/>
+    </changeSet>
+
+    <!--111111-->
+    <changeSet author="squapl" id="insert-admin-user">
+        <insert tableName="users">
+            <column name="username" value="9999999999"/>
+            <column name="password" value="$2a$10$d/lcNuilUc7mhYGAGnDEOOKZ2/S7mOHHOozQFeZwT.sHai/YXOKEq"/>
+            <column name="verified" value="Y"/>
+            <column name="createdby" value="1"/>
+            <column name="updatedby" value="1"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet author="squapl" id="u_centerid_fk">
+        <addForeignKeyConstraint baseColumnNames="center_id" baseTableName="users" constraintName="u_centerid_fk"
+                                 referencedColumnNames="id" referencedTableName="center_details"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="u_corporate_fk">
+        <addForeignKeyConstraint baseColumnNames="corporate_id" baseTableName="users" constraintName="u_corporate_fk"
+                                 referencedColumnNames="id" referencedTableName="corporate_details"/>
+    </changeSet>
+
+
+</databaseChangeLog>

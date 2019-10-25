@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createUserTable">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" type="integer">
+                <!--            <constraints primaryKey="true"/>-->
+            </column>
+            <column name="role_id" type="BIGSERIAL"/>
+            <column name="user_id" type="BIGSERIAL"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="role_fk" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="role_fk"
+                                 referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="user-fk" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="user_fk"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="addUserIdPK">
+        <addPrimaryKey
+                columnNames="role_id, user_id"
+                constraintName="pk_role_userid"
+                tableName="user_role"
+        />
+    </changeSet>
+
+    <changeSet author="squapl" id="insert-admin-user">
+        <insert tableName="user_role">
+            <column name="role_id" value="1"/>
+            <column name="user_id" value="1"/>
+
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

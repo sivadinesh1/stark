@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createdwUserTable">
+        <createTable tableName="dw_user">
+            <column autoIncrement="true" name="id" type="integer">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="source_centerid" type="varchar(45)"/>
+            <column name="centerid" type="BIGSERIAL"/>
+            <column name="firstname" type="varchar(60)"/>
+            <column name="mobilenumber" type="varchar(60)"/>
+            <column name="servicevariation" type="varchar(255)"/>
+            <column name="startdate" type="varchar(50)"/>
+            <column name="enddate" type="varchar(50)"/>
+            <column name="isactive" type="varchar(10)"/>
+            <column name="lastrun" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

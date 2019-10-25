@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createTrialTable">
+        <createTable tableName="enq_trial">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(45)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="isactive" type="varchar(1)"/>
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="add-trial-name-uni">
+        <addUniqueConstraint columnNames="name" constraintName="trial-name-uni" tableName="enq_trial"/>
+    </changeSet>
+
+
+</databaseChangeLog>

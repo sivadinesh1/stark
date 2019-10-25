@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createUserTable">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="description" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="squapl" id="insert-role">
+        <insert tableName="role">
+
+            <column name="name" value="SUPER_ADMIN"/>
+            <column name="description" value="Super Admin"/>
+        </insert>
+
+        <insert tableName="role">
+
+            <column name="name" value="CORPORATE"/>
+            <column name="description" value="Corporate"/>
+        </insert>
+
+        <insert tableName="role">
+
+            <column name="name" value="MEMBER_COORDINATOR"/>
+            <column name="description" value="Member Co-ordinator"/>
+        </insert>
+
+
+        <insert tableName="role">
+
+            <column name="name" value="TRAINER"/>
+            <column name="description" value="Trainer"/>
+        </insert>
+
+        <insert tableName="role">
+
+            <column name="name" value="MEMBER"/>
+            <column name="description" value="Member"/>
+        </insert>
+
+        <insert tableName="role">
+
+            <column name="name" value="CENTER_ADMIN"/>
+            <column name="description" value="Center Admin"/>
+        </insert>
+
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="member-services-tbl">
+        <createTable tableName="member_services">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="userid" type="BIGSERIAL"/>
+            <column name="service_id" type="BIGSERIAL"/>
+            <column name="trainer_id" type="BIGSERIAL"/>
+
+            <column name="grossfee" type="DECIMAL(10, 2)"/>
+            <column name="per_unit_fee" type="DECIMAL(10, 2)"/>
+            <column name="tax" type="DECIMAL(10, 2)"/>
+            <column name="nettotal" type="INT"/>
+            <column name="discount" type="INT"/>
+
+            <column name="isactive" type="varchar(1)"/>
+            <column name="pymt_received" type="varchar(1)"/>
+            <column name="completed_sessions" type="integer"/>
+
+            <column name="startdate" type="datetime(6)"/>
+            <column name="enddate" type="datetime(6)"/>
+
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="member_userid_fk">
+        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="member_services"
+                                 constraintName="member_userid_fk"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="member_service_fk">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="member_services"
+                                 constraintName="member_service_fk"
+                                 referencedColumnNames="id" referencedTableName="service"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="trainerid_services_fk">
+        <addForeignKeyConstraint baseColumnNames="trainer_id" baseTableName="member_services"
+                                 constraintName="trainerid_services_fk"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

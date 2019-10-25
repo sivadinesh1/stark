@@ -1,0 +1,63 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createCorporateTable">
+        <createTable tableName="corporate_details">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <!--            <column name="userid" type="BIGSERIAL"/>-->
+
+            <column name="name" type="varchar(45)"/>
+            <!--            <column name="address" type="varchar(255)"/>-->
+            <column name="details" type="jsonb"/>
+
+            <column name="isactive" type="varchar(1)"/>
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+
+
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="corporate-name-uni" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addUniqueConstraint columnNames="name" constraintName="corporate_name_uniq" tableName="corporate_details"/>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="crt-idx-address">
+        <createIndex indexName="crt-idx-address" tableName="corporate_details">
+            <column name="details"/>
+        </createIndex>
+    </changeSet>
+
+    <!--    <changeSet author="squapl" id="corporate_userid_fk">-->
+    <!--        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="corporate_details"-->
+    <!--                                 constraintName="corporate_userid_fk"-->
+    <!--                                 referencedColumnNames="id" referencedTableName="users"/>-->
+    <!--    </changeSet>-->
+
+
+    <!--    <changeSet author="squapl" id="insert-corporate">-->
+    <!--        <insert tableName="corporate">-->
+
+    <!--            <column name="id" value="1"/>-->
+    <!--            <column name="name" value="Club Memberships"/>-->
+    <!--            <column name="details"-->
+    <!--                    value='{"contacts": {"mobile" : "9999999991", "email" : "abc@abc.com"}, "address": { "line1" : "ifit - corp"} }'/>-->
+
+    <!--            <column name="isactive" value="Y"/>-->
+
+
+    <!--        </insert>-->
+
+    <!--    </changeSet>-->
+
+
+</databaseChangeLog>

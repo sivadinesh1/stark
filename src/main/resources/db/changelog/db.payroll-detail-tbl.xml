@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<changeSet author="squapl" id="createPayrollDetailTable">
+    <createTable tableName="payroll_detail" >
+        <column autoIncrement="true" name="id" type="BIGSERIAL">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="payroll_id" type="BIGSERIAL"/>
+        <column name="trainer_id" type="BIGSERIAL"/>
+        <column name="member_services_id" type="BIGSERIAL"/>
+        <column name="total_units" type="datetime(6)"/>
+        <column name="net_pay" type="integer"/>
+        <column name="trainerfee" type="integer(2)"/>
+        <column name="service_startdate" type="datetime(6)"/>
+        <column name="service_enddate" type="datetime(6)"/>
+
+        <column name="createdby" type="BIGSERIAL"/>
+        <column name="createddatetime" type="datetime(6)"/>
+        <column name="updatedby" type="BIGSERIAL"/>
+        <column name="updateddatetime" type="datetime(6)"/>
+
+    </createTable>
+</changeSet>
+
+
+
+
+    <changeSet author="squapl" id="payroll_detail_trainerid_fk" >
+        <addForeignKeyConstraint baseColumnNames="trainer_id" baseTableName="payroll_master" constraintName="payroll_detail_trainerid_fk"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="payroll_id_fk" >
+        <addForeignKeyConstraint baseColumnNames="payroll_id" baseTableName="payroll_detail" constraintName="payroll_id_fk"
+                                 referencedColumnNames="id" referencedTableName="payroll_master"/>
+    </changeSet>
+
+
+</databaseChangeLog>

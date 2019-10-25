@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createCentersTable">
+        <createTable tableName="center_details">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <!--            <column name="userid" type="BIGSERIAL"/>-->
+            <column name="corporate_id" type="BIGSERIAL"/>
+            <column name="name" type="varchar(45)"/>
+            <column name="details" type="jsonb"/>
+            <column name="isactive" type="varchar(1)"/>
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="center-name-uni">
+        <addUniqueConstraint columnNames="name" constraintName="center_name_uniq" tableName="center_details"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="corporate_fk">
+        <addForeignKeyConstraint baseColumnNames="corporate_id" baseTableName="center_details"
+                                 constraintName="corporate_fk"
+                                 referencedColumnNames="id" referencedTableName="corporate_details"/>
+    </changeSet>
+
+    <!--    <changeSet author="squapl" id="center_userid_fk">-->
+    <!--        <addForeignKeyConstraint baseColumnNames="userid" baseTableName="center_details"-->
+    <!--                                 constraintName="center_userid_fk"-->
+    <!--                                 referencedColumnNames="id" referencedTableName="users"/>-->
+    <!--    </changeSet>-->
+
+    <!--    <changeSet author="squapl" id="insert-center">-->
+    <!--        <insert tableName="center">-->
+
+    <!--            <column name="id" value="1"/>-->
+    <!--            <column name="corporate_id" value="1"/>-->
+    <!--            <column name="name" value="Shanti Nagar - ifitness"/>-->
+    <!--            <column name="address" value="ifit - corp"/>-->
+
+    <!--            <column name="isactive" value="Y"/>-->
+
+
+    <!--        </insert>-->
+
+    <!--    </changeSet>-->
+
+</databaseChangeLog>

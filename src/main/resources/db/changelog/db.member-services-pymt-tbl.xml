@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<changeSet author="squapl" id="createMembersServicesPymtTable">
+    <createTable tableName="member_services_pymt" >
+        <column autoIncrement="true" name="id" type="BIGSERIAL">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="msid" type="BIGSERIAL"/>
+        <column name="actual_paid" type="integer"/>
+        <column name="tax" type="DECIMAL(10, 1)"/>
+        <column name="gross" type="integer"/>
+        <column name="bal_to_pay" type="integer"/>
+
+        <column name="paid_date" type="datetime(6)"/>
+
+
+
+        <column name="createdby" type="BIGSERIAL"/>
+        <column name="createddatetime" type="datetime(6)"/>
+        <column name="updatedby" type="BIGSERIAL"/>
+        <column name="updateddatetime" type="datetime(6)"/>
+    </createTable>
+</changeSet>
+
+
+
+
+
+
+
+    <changeSet author="squapl" id="msid_fk" >
+        <addForeignKeyConstraint baseColumnNames="msid" baseTableName="member_services_pymt" constraintName="msid_fk"
+                                 referencedColumnNames="id" referencedTableName="member_services"/>
+    </changeSet>
+
+</databaseChangeLog>

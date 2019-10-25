@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<changeSet author="squapl" id="createMembersTable">
+    <createTable tableName="service_tracker" >
+        <column autoIncrement="true" name="id" type="BIGSERIAL">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="member_services_id" type="BIGSERIAL"/>
+        <column name="trainer_id" type="BIGSERIAL"/>
+        <column name="service_unit" type="integer"/>
+        <column name="service_date" type="datetime(6)"/>
+        <column name="remarks" type="varchar(255)"/>
+
+
+        <column name="createdby" type="BIGSERIAL"/>
+        <column name="createddatetime" type="datetime(6)"/>
+        <column name="updatedby" type="BIGSERIAL"/>
+        <column name="updateddatetime" type="datetime(6)"/>
+    </createTable>
+</changeSet>
+
+
+
+
+
+    <changeSet author="squapl" id="trainer_member_services_fk" >
+        <addForeignKeyConstraint baseColumnNames="member_services_id" baseTableName="service_tracker" constraintName="trainer_member_services_fk"
+                                 referencedColumnNames="id" referencedTableName="member_services"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="trainerid_service_tracker_fk" >
+        <addForeignKeyConstraint baseColumnNames="trainer_id" baseTableName="service_tracker" constraintName="trainerid_service_tracker_fk"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>

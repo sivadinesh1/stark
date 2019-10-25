@@ -1,0 +1,57 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <include file="db/changelog/db.migration-tbl.xml"/>
+    <include file="db/changelog/db.dw-mappings-tbl.xml"/>
+
+    <include file="db/changelog/db.corporate-details-tbl.xml"/>
+    <include file="db/changelog/db.center-details-tbl.xml"/>
+
+    <include file="db/changelog/db.role-tbl.xml"/>
+    <include file="db/changelog/db.users-tbl.xml"/>
+    <include file="db/changelog/db.user-role-tbl.xml"/>
+
+
+    <include file="db/changelog/db.service-sub-category-tbl.xml"/>
+    <include file="db/changelog/db.service-category-tbl.xml"/>
+    <include file="db/changelog/db.service-tbl.xml"/>
+    <include file="db/changelog/db.service-details-tbl.xml"/>
+    <include file="db/changelog/db.category-sub-category-tbl.xml"/>
+
+
+    <include file="db/changelog/db.member-services-tbl.xml"/>
+    <include file="db/changelog/db.trainer-details-tbl.xml"/>
+
+
+    <include file="db/changelog/db.trainer-sc-tbl.xml"/>
+
+    <include file="db/changelog/db.service-tracker-tbl.xml"/>
+
+    <include file="db/changelog/db.member-services-pymt-tbl.xml"/>
+
+    <include file="db/changelog/db.payroll-master-tbl.xml"/>
+    <include file="db/changelog/db.payroll-detail-tbl.xml"/>
+
+
+    <include file="db/changelog/db.dw-user-tbl.xml"/>
+    <include file="db/changelog/db.raw-user-tbl.xml"/>
+
+    <include file="db/changelog/db.enq-trial-tbl.xml"/>
+    <include file="db/changelog/db.enq-prospects-tbl.xml"/>
+
+    <include file="db/changelog/db.enquiry-tbl.xml"/>
+    <include file="db/changelog/db.enq-follow-ups-tbl.xml"/>
+
+    <include file="db/changelog/db.enq-service-trial-tbl.xml"/>
+
+    <include file="db/changelog/db.enq-user-type-tbl.xml"/>
+
+
+</databaseChangeLog>
+
+
+
+

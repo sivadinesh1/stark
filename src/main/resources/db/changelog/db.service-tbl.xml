@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createServiceTable">
+        <createTable tableName="service">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="center_id" type="BIGSERIAL"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="service_category_id" type="BIGSERIAL"/>
+            <column name="service_sub_category_id" type="BIGSERIAL"/>
+            <column name="isactive" type="varchar(1)"/>
+            <column name="units_in_stock" type="integer"/>
+
+            <column name="createdby" type="BIGSERIAL"/>
+            <column name="createddatetime" type="datetime(6)"/>
+            <column name="updatedby" type="BIGSERIAL"/>
+            <column name="updateddatetime" type="datetime(6)"/>
+
+
+        </createTable>
+    </changeSet>
+
+    <changeSet author="squapl" id="centerid_service_fk">
+        <addForeignKeyConstraint baseColumnNames="center_id" baseTableName="service"
+                                 constraintName="centerid_service_fk"
+                                 referencedColumnNames="id" referencedTableName="center_details"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="service_category_fk">
+        <addForeignKeyConstraint baseColumnNames="service_category_id" baseTableName="service"
+                                 constraintName="service_category_fk"
+                                 referencedColumnNames="id" referencedTableName="service_category"/>
+    </changeSet>
+
+
+</databaseChangeLog>

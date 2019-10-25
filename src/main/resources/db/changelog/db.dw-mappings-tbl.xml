@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+<changeSet author="squapl" id="createUserTable">
+    <createTable tableName="dw_mappings" >
+        <column autoIncrement="true" name="id" type="integer">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="col_name" type="varchar(45)"/>
+        <column name="ext_value" type="varchar(60)"/>
+        <column name="sys_value" type="varchar(50)"/>
+
+    </createTable>
+</changeSet>
+
+
+    <changeSet author="squapl" id="insert-role">
+        <insert tableName="dw_mappings">
+
+            <column name="col_name" value="centerid"/>
+            <column name="ext_value" value="1312"/>
+            <column name="sys_value" value="1"/>
+
+        </insert>
+
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="squapl" id="createServiceSubCategoryTable">
+        <createTable tableName="category_sub_category">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+
+
+            <column name="category_id" type="BIGSERIAL"/>
+            <column name="sub_category_id" type="BIGSERIAL"/>
+
+
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="squapl" id="serv_category_fk">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="category_sub_category"
+                                 constraintName="serv_category_fk"
+                                 referencedColumnNames="id" referencedTableName="service_category"/>
+    </changeSet>
+
+    <changeSet author="squapl" id="serv_sub_category_fk">
+        <addForeignKeyConstraint baseColumnNames="sub_category_id" baseTableName="category_sub_category"
+                                 constraintName="serv_sub_category_fk"
+                                 referencedColumnNames="id" referencedTableName="service_sub_category"/>
+    </changeSet>
+
+
+</databaseChangeLog>
