@@ -30,12 +30,28 @@ public interface SetupService {
     // trainsers
     public TrainerDetails addTrainer(TrainerDetails trainerDetails);
 
+    public TrainerDetails editTrainer(TrainerDetails trainerDetails);
+
+    // MC
+    public User addMc(User userVO);
+
+    public int editMc(User userVO);
+
+    // CA
+    public User addCA(User userVO);
+
+    public int editCA(User userVO);
+
+
     // service category
     public List<ServiceCategory> getAllServiceCategories(String status, Long center_id);
 
     public List<ServiceSubCategory> getServiceSubCategory(Long category_id);
 
     public APIResponseObj addServiceCategory(ServiceCategory serviceCategoryVO);
+
+    // services
+    public APIResponseObj addServices(Services servicesVO);
 
     public APIResponseObj updateServiceCategory(ServiceCategory serviceCategory);
 

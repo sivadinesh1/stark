@@ -1,6 +1,6 @@
 package com.squapl.stark.controllers;
 
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.service.UserService;
 import com.squapl.stark.util.APIResponseObj;
@@ -27,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserDao userdao;
+    private UserRepository userdao;
 
 
     @RequestMapping(

@@ -7,9 +7,10 @@
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(45)"/>
-            <column name="description" type="varchar(255)"/>
-            <column name="isactive" type="varchar(1)"/>
+            <column name="enq_id" type="varchar(45)"/>
+            <column name="trial_date" type="varchar(255)"/>
+            <column name="status" type="varchar(1)"/>
+            <column name="notes" type="varchar(150)"/>
 
             <column name="createdby" type="BIGSERIAL"/>
             <column name="createddatetime" type="datetime(6)"/>
@@ -19,10 +20,10 @@
         </createTable>
     </changeSet>
 
-
-    <changeSet author="squapl" id="add-trial-name-uni">
-        <addUniqueConstraint columnNames="name" constraintName="trial-name-uni" tableName="enq_trial"/>
+    <changeSet author="squapl" id="member_userid_fk">
+        <addForeignKeyConstraint baseColumnNames="enq_id" baseTableName="enq_trial"
+                                 constraintName="enq_trial_fk"
+                                 referencedColumnNames="id" referencedTableName="enquiry"/>
     </changeSet>
-
 
 </databaseChangeLog>

@@ -1,10 +1,11 @@
 package com.squapl.stark.service.serviceimpl;
 
+import com.squapl.stark.Exception.EntityAlreadyPresentException;
 import com.squapl.stark.model.RawUser;
 import com.squapl.stark.model.User;
 import com.squapl.stark.model.security.UserRole;
 import com.squapl.stark.repository.RoleDao;
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.UserService;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class UserImpl implements UserService {
 
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Autowired
     RoleDao roleDao;
@@ -42,26 +43,23 @@ public class UserImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+
     public User createUser(User user, Set<UserRole> userRoles) {
-        User localUser = userDao.findByUsername(user.getUsername());
+        User localUser = userRepository.findByUsername(user.getUsername());
         System.out.println("1111");
         if (localUser != null) {
             log.info("User with username {} already exist. Nothing will be done. ", user.getUsername());
+            throw new EntityAlreadyPresentException(localUser.getMobilenumber());
         } else {
             String encryptedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encryptedPassword);
 
-            System.out.println("222222");
-
-            // DND
-//            for (UserRole ur : userRoles) {
-//                System.out.println("33333");
-//                roleDao.save(ur.getRole());
-//            }
-            System.out.println("444444");
+            for (UserRole ur : userRoles) {
+                System.out.println("33333");
+                roleDao.save(ur.getRole());
+            }
             user.getUserRoles().addAll(userRoles);
-            System.out.println("555555");
-            localUser = userDao.save(user);
+            localUser = userRepository.save(user);
         }
 
         return localUser;

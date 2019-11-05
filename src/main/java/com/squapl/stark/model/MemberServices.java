@@ -20,7 +20,7 @@ public class MemberServices {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")

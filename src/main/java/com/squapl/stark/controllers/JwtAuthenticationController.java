@@ -4,7 +4,7 @@ import com.squapl.stark.config.JwtTokenUtil;
 import com.squapl.stark.model.*;
 import com.squapl.stark.model.security.UserRole;
 import com.squapl.stark.repository.RoleDao;
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.service.JwtUserDetailsService;
 import com.squapl.stark.service.UserService;
@@ -43,7 +43,7 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -61,7 +61,7 @@ public class JwtAuthenticationController {
             System.out.println("TEST.. " + e.getMessage());
 
             if (e.getMessage().equalsIgnoreCase("INVALID_CREDENTIALS")) {
-                User user = userDao.findByUsername(authenticationRequest.getUsername());
+                User user = userRepository.findByUsername(authenticationRequest.getUsername());
                 if (user == null) {
                     return new ResponseEntity<>(new APIResponseObj("FAILURE", "USER_NOT_FOUND", ""), HttpStatus.OK);
                 } else {
@@ -75,7 +75,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        User user = userDao.findByUsername(userDetails.getUsername());
+        User user = userRepository.findByUsername(userDetails.getUsername());
 
         userService.assignRoleValues(userDetails, user);
 
@@ -180,7 +180,7 @@ public class JwtAuthenticationController {
     @GetMapping(value = "/getuserinfo/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUserInfo(@PathVariable("username") String username) {
 
-        User user = userDao.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         return new ResponseEntity<User>(user, HttpStatus.OK);
 

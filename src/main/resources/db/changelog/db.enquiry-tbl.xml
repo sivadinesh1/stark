@@ -10,16 +10,16 @@
             <column name="center_id" type="BIGSERIAL"/>
             <column name="e_user_id" type="BIGSERIAL"/>
             <column name="p_user_id" type="BIGSERIAL"/>
-            <column name="user_type" type="varchar(45)"/>
+
             <column name="service_id" type="BIGSERIAL"/>
-            <column name="service_category_id" type="BIGSERIAL"/>
+
             <column name="status" type="varchar(20)"/>
             <column name="trial_status" type="varchar(20)"/>
             <column name="trial_pack" type="BIGSERIAL"/>
 
             <column name="enquiry_datetime" type="datetime(6)"/>
             <column name="enquiry_closure_datetime" type="datetime(6)"/>
-            <column name="assigned_to" type="BIGSERIAL"/>
+
             <column name="lead_source" type="varchar(80)"/>
             <column name="nxt_followup_datetime" type="datetime(6)"/>
             <column name="status_notes" type="varchar(80)"/>

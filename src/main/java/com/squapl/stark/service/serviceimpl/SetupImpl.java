@@ -12,8 +12,6 @@ import com.squapl.stark.util.APIResponseObj;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +37,7 @@ public class SetupImpl implements SetupService {
     Helper helper;
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Autowired
     CorporateRepository corporateRepository;
@@ -65,6 +63,8 @@ public class SetupImpl implements SetupService {
     @Autowired
     private TrainerDetailsRepository trainerDetailsRepository;
 
+    @Autowired
+    private ServicesRepository servicesRepository;
 
 //    Corporates - addCorporates, getAllCorporates, getCorporatesCount, updateCorporate,
 
@@ -73,7 +73,7 @@ public class SetupImpl implements SetupService {
         JsonNode detailsNode = corporateVO.getDetails();
         String phonenumber = detailsNode.path("contact").get("phone").asText();
 
-        User tmpUser = userDao.findByMobilenumber(phonenumber);
+        User tmpUser = userRepository.findByMobilenumber(phonenumber);
 
         if (tmpUser != null) {
             throw new EntityAlreadyPresentException("Phone");
@@ -94,7 +94,6 @@ public class SetupImpl implements SetupService {
 
         return new APIResponseObj("SUCCESS", "", "");
     }
-
 
     public List<Corporate> getAllCorporates(String status) {
         List<Corporate> corporateList = corporateRepository.findByIsactiveOrderByNameAsc(status);
@@ -119,7 +118,7 @@ public class SetupImpl implements SetupService {
         JsonNode detailsNode = centerVO.getDetails();
         String phonenumber = detailsNode.path("contact").get("phone").asText();
 
-        User tmpUser = userDao.findByMobilenumber(phonenumber);
+        User tmpUser = userRepository.findByMobilenumber(phonenumber);
 
         if (tmpUser != null) {
             throw new EntityAlreadyPresentException("Phone");
@@ -178,6 +177,7 @@ public class SetupImpl implements SetupService {
         User user = trainerDetailsVO.getTrainuser();
         user.setPassword("111111");
 
+
         Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(new UserRole(user, roleDao.findByName("TRAINER")));
         System.out.println("user roles >> " + userRoles.toString());
@@ -186,75 +186,58 @@ public class SetupImpl implements SetupService {
 
         trainerDetailsVO.setTrainuser(trainUser);
 
-        trainerDetailsRepository.save(trainerDetailsVO);
+        TrainerDetails newTrainerDetails = trainerDetailsRepository.save(trainerDetailsVO);
 
-//        User isDuplicatePhone = userService.getUserDetails(trainerDetailsVO.getTrainuser());
-//
-//        if (isDuplicatePhone != null) {
-//            return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_PHONE", ""), HttpStatus.OK);
-//        }
-//
-//        User user = new User();
-//        Center center = new Center();
-//        center.setId(Long.valueOf(center_id));
-//
-//        user.setCenter(center);
-//        user.setFirstname(firstname);
-//        user.setStatus("A");
-//        user.setVerified("N");
-//        user.setMobilenumber(phone);
-//        user.setUsername(phone);
-//        user.setEmail(email);
-//        user.setCreatedby(loggedinuserid);
-//        user.setCreateddatetime(new Date());
-//        user.setCorporate(null);
-//        user.setSignup_mode("");
-//        user.setGender(gender);
-//        user.setDob(dob);
-//
-//        System.out.println("user >> @@@ ");
-//
-//        user.setPassword("111111");
-//
-//
-//        Set<UserRole> userRoles = new HashSet<>();
-//        userRoles.add(new UserRole(user, roleDao.findByName("TRAINER")));
-//        System.out.println("user roles >> " + userRoles.toString());
-//
-//        User newUser = userService.createUser(user, userRoles);
-//
-//        if (newUser != null) {
-//            TrainerDetails trainerDetails = new TrainerDetails();
-//            trainerDetails.setLevel(level);
-//            trainerDetails.setTrainerfee(Integer.valueOf(trainerfee));
-//            trainerDetails.setTrainuser(newUser);
-//            trainerDetails.setCreatedby(loggedinuserid);
-//            trainerDetails.setCreateddatetime(new Date());
-//
-//            setupService.addTrainer(trainerDetails);
-//        }
-//
+        return newTrainerDetails;
+    }
+
+
+    // trainser - editTrainer,
+    public TrainerDetails editTrainer(TrainerDetails trainerDetailsVO) {
+
+        userRepository.updateTrainerInfo(trainerDetailsVO);
 
         TrainerDetails newTrainerDetails = trainerDetailsRepository.save(trainerDetailsVO);
 
         return newTrainerDetails;
     }
 
-//    public TrainerDetails addTrainer(TrainerDetails trainerDetails) {
-//
-//        int rowcount = 0;
-//
-//        entityManager.persist(trainerDetails);
-//
-//        return trainerDetails;
-//    }
+    public User addMc(User userVO) {
+        userVO.setPassword("111111");
+        Set<UserRole> userRoles = new HashSet<>();
+        userRoles.add(new UserRole(userVO, roleDao.findByName("MEMBER_COORDINATOR")));
+        System.out.println("user roles >> " + userRoles.toString());
+
+        return (User) userService.createUser(userVO, userRoles);
+    }
+
+
+    public int editMc(User userVO) {
+        return userRepository.updateMcInfo(userVO);
+
+    }
+
+    public User addCA(User userVO) {
+        userVO.setPassword("111111");
+        Set<UserRole> userRoles = new HashSet<>();
+        userRoles.add(new UserRole(userVO, roleDao.findByName("CENTER_ADMIN")));
+        System.out.println("user roles >> " + userRoles.toString());
+
+        return (User) userService.createUser(userVO, userRoles);
+    }
+
+
+    public int editCA(User userVO) {
+        return userRepository.updateCAInfo(userVO);
+
+    }
 
 
     // service category
 
     public APIResponseObj addServiceCategory(ServiceCategory serviceCategoryVO) {
 
-        if(serviceCategoryVO.getSelectedsubcatids().length() > 0 ) {
+        if (serviceCategoryVO.getSelectedsubcatids().length() > 0) {
             List<String> list = Stream.of(serviceCategoryVO.getSelectedsubcatids().split(","))
                     .collect(Collectors.toList());
             Set<CategorySubCategory> categorySubCategories = new HashSet<>();
@@ -270,8 +253,6 @@ public class SetupImpl implements SetupService {
         }
 
 
-
-
         ServiceCategory serviceCategory = serviceCategoryRepository.save(serviceCategoryVO);
 
         return new APIResponseObj("SUCCESS", "", "");
@@ -279,7 +260,7 @@ public class SetupImpl implements SetupService {
     }
 
     public APIResponseObj updateServiceCategory(ServiceCategory serviceCategoryVO) {
-        if(serviceCategoryVO.getSelectedsubcatids().length() > 0 ) {
+        if (serviceCategoryVO.getSelectedsubcatids().length() > 0) {
             List<String> list;
             list = Stream.of(serviceCategoryVO.getSelectedsubcatids().split(","))
                     .collect(Collectors.toList());
@@ -313,7 +294,6 @@ public class SetupImpl implements SetupService {
         List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAllByIsactiveAndCenter(status, center);
         return serviceCategoryList;
     }
-
 
 
     public List<ServiceSubCategory> getServiceSubCategory(Long category_id) {
@@ -416,5 +396,9 @@ public class SetupImpl implements SetupService {
     }
 
 
+    public APIResponseObj addServices(Services servicesVO) {
+        servicesRepository.save(servicesVO);
+        return new APIResponseObj("SUCCESS", "", "");
+    }
 }
 

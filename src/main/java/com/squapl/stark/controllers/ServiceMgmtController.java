@@ -1,6 +1,7 @@
 package com.squapl.stark.controllers;
 
 import com.squapl.stark.model.JwtResponse;
+import com.squapl.stark.model.Services;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.service.ServiceMgmtService;
 import com.squapl.stark.service.UserService;
@@ -15,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,18 +37,30 @@ public class ServiceMgmtController {
     private Helper helper;
 
     @RequestMapping(
-            value = "/getallservices/{center_id}/{category_id}/{subcategory_id}",
+            value = "/getallservices/{status}/{center_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllServices(@PathVariable("center_id") String center_id,
-                                         @PathVariable("category_id") String category_id,
-                                         @PathVariable("subcategory_id") String subcategory_id) {
+    public ResponseEntity getAllServices(@PathVariable("status") String status,
+                                         @PathVariable("center_id") String center_id
+    ) {
 
-        JSONArray restultJArr = serviceMgmtService.getAllServices(center_id, category_id, subcategory_id);
+        List<Services> restultJArr = serviceMgmtService.getAllServices(status, center_id);
 
         return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", restultJArr), HttpStatus.OK);
     }
 
+//    @RequestMapping(
+//            value = "/getallservices/{center_id}/{category_id}/{subcategory_id}",
+//            method = RequestMethod.GET,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity getAllServices(@PathVariable("center_id") String center_id,
+//                                         @PathVariable("category_id") String category_id,
+//                                         @PathVariable("subcategory_id") String subcategory_id) {
+//
+//        JSONArray restultJArr = serviceMgmtService.getAllServices(center_id, category_id, subcategory_id);
+//
+//        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", restultJArr), HttpStatus.OK);
+//    }
 
     @RequestMapping(
             value = "/gettrainers/{center_id}",
@@ -105,6 +120,17 @@ public class ServiceMgmtController {
 
     }
 
+    @RequestMapping(
+            value = "/getservicesubcatbycat/{centerid}/{category_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceSubCatByCat(@PathVariable("centerid") String centerid,
+                                                @PathVariable("category_id") String category_id) {
+
+        JSONArray restultJson = serviceMgmtService.getServiceSubCatByCat(centerid, category_id);
+
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", restultJson), HttpStatus.OK);
+    }
 
 }
 

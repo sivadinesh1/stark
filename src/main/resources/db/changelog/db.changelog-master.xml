@@ -18,7 +18,7 @@
     <include file="db/changelog/db.service-sub-category-tbl.xml"/>
     <include file="db/changelog/db.service-category-tbl.xml"/>
     <include file="db/changelog/db.service-tbl.xml"/>
-    <include file="db/changelog/db.service-details-tbl.xml"/>
+
     <include file="db/changelog/db.category-sub-category-tbl.xml"/>
 
 

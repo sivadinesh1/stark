@@ -2,18 +2,15 @@ package com.squapl.stark.controllers;
 
 import com.squapl.stark.aop.LogExecutionTime;
 import com.squapl.stark.model.*;
-import com.squapl.stark.model.security.UserRole;
-import com.squapl.stark.repository.CategorySubCategoryRepository;
 import com.squapl.stark.repository.RoleDao;
 import com.squapl.stark.repository.TrainerDetailsRepository;
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.service.SetupService;
 import com.squapl.stark.service.UserService;
 import com.squapl.stark.util.APIResponseObj;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -33,24 +28,18 @@ public class SetupController {
 
     @Autowired
     DwUtilService dwUtilService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private SetupService setupService;
-
-    @Autowired
-    private Helper helper;
-
     @Autowired
     TrainerDetailsRepository trainerDetailsRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleDao roleDao;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private SetupService setupService;
+    @Autowired
+    private Helper helper;
 
     @LogExecutionTime
     @RequestMapping(
@@ -136,7 +125,6 @@ public class SetupController {
     }
 
 
-
     @Transactional
     @RequestMapping(value = "/add-trainer", method = RequestMethod.POST)
     public ResponseEntity<?> addTrainer(@RequestBody TrainerDetails trainerDetailsVO) {
@@ -144,177 +132,68 @@ public class SetupController {
         System.out.println("print trainer details " + trainerDetailsVO.toString());
 
         setupService.addTrainer(trainerDetailsVO);
-
-
-
-//        String token = "";
-//        JSONObject result = helper.getJsonObj(stringToParse);
-//        log.debug("PARAMS >> " + result.toJSONString());
-//        String phonenumber = "";
-//
-//            log.debug("PARAMS NEW >> " + result.toJSONString());
-
-//            String firstname = (String) result.get("firstname");
-//            String phone = (String) result.get("phone");
-//            String email = (String) result.get("email");
-//            Long center_id = (Long) result.get("center_id");
-//            String gender = (String) result.get("gender");
-//            String dob = (String) result.get("dob");
-//
-//            String level = (String) result.get("level");
-//            String trainerfee = (String) result.get("trainerfee");
-//
-//            Long loggedinuserid = (Long) result.get("loggedinuserid");
-//
-//            System.out.println("json loggedinuserid obj.." + loggedinuserid);
-
-
-//            User isDuplicatePhone = userService.getUserDetails(phonenumber);
-//
-//            if (isDuplicatePhone != null) {
-//                return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_PHONE", ""), HttpStatus.OK);
-//            }
-//
-//            User user = new User();
-//            Center center = new Center();
-//            center.setId(Long.valueOf(center_id));
-//
-//            user.setCenter(center);
-//            user.setFirstname(firstname);
-//            user.setStatus("A");
-//            user.setVerified("N");
-//            user.setMobilenumber(phone);
-//            user.setUsername(phone);
-//            user.setEmail(email);
-//            user.setCreatedby(loggedinuserid);
-//            user.setCreateddatetime(new Date());
-//            user.setCorporate(null);
-//            user.setSignup_mode("");
-//            user.setGender(gender);
-//            user.setDob(dob);
-//
-//            System.out.println("user >> @@@ ");
-//
-//            user.setPassword("111111");
-//
-//
-//            Set<UserRole> userRoles = new HashSet<>();
-//            userRoles.add(new UserRole(user, roleDao.findByName("TRAINER")));
-//            System.out.println("user roles >> " + userRoles.toString());
-//
-//            User newUser = userService.createUser(user, userRoles);
-//
-//            if (newUser != null) {
-//                TrainerDetails trainerDetails = new TrainerDetails();
-//                trainerDetails.setLevel(level);
-//                trainerDetails.setTrainerfee(Integer.valueOf(trainerfee));
-//                trainerDetails.setTrainuser(newUser);
-//                trainerDetails.setCreatedby(loggedinuserid);
-//                trainerDetails.setCreateddatetime(new Date());
-//
-//                setupService.addTrainer(trainerDetails);
-//            }
-
-
-            System.out.println("user >> @@@ ### ");
-
-
-
-
+        System.out.println("user >> @@@ ### ");
         return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
-
 
     }
 
+    @Transactional
+    @RequestMapping(value = "/edit-trainer", method = RequestMethod.POST)
+    public ResponseEntity<?> editTrainer(@RequestBody TrainerDetails trainerDetailsVO) {
 
-//    @Transactional
-//    @RequestMapping(value = "/add-trainer", method = RequestMethod.POST)
-//    public ResponseEntity<?> addTrainer(@RequestBody String stringToParse) throws Exception {
-//        String token = "";
-//        JSONObject result = helper.getJsonObj(stringToParse);
-//        log.debug("PARAMS >> " + result.toJSONString());
-//        String phonenumber = "";
-//
-//        try {
-//            log.debug("PARAMS NEW >> " + result.toJSONString());
-//
-//            String firstname = (String) result.get("firstname");
-//            String phone = (String) result.get("phone");
-//            String email = (String) result.get("email");
-//            Long center_id = (Long) result.get("center_id");
-//            String gender = (String) result.get("gender");
-//            String dob = (String) result.get("dob");
-//
-//            String level = (String) result.get("level");
-//            String trainerfee = (String) result.get("trainerfee");
-//
-//            Long loggedinuserid = (Long) result.get("loggedinuserid");
-//
-//            System.out.println("json loggedinuserid obj.." + loggedinuserid);
-//
-//
-//            User isDuplicatePhone = userService.getUserDetails(phonenumber);
-//
-//            if (isDuplicatePhone != null) {
-//                return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_PHONE", ""), HttpStatus.OK);
-//            }
-//
-//            User user = new User();
-//            Center center = new Center();
-//            center.setId(Long.valueOf(center_id));
-//
-//            user.setCenter(center);
-//            user.setFirstname(firstname);
-//            user.setStatus("A");
-//            user.setVerified("N");
-//            user.setMobilenumber(phone);
-//            user.setUsername(phone);
-//            user.setEmail(email);
-//            user.setCreatedby(loggedinuserid);
-//            user.setCreateddatetime(new Date());
-//            user.setCorporate(null);
-//            user.setSignup_mode("");
-//            user.setGender(gender);
-//            user.setDob(dob);
-//
-//            System.out.println("user >> @@@ ");
-//
-//            user.setPassword("111111");
-//
-//
-//            Set<UserRole> userRoles = new HashSet<>();
-//            userRoles.add(new UserRole(user, roleDao.findByName("TRAINER")));
-//            System.out.println("user roles >> " + userRoles.toString());
-//
-//            User newUser = userService.createUser(user, userRoles);
-//
-//            if (newUser != null) {
-//                TrainerDetails trainerDetails = new TrainerDetails();
-//                trainerDetails.setLevel(level);
-//                trainerDetails.setTrainerfee(Integer.valueOf(trainerfee));
-//                trainerDetails.setTrainuser(newUser);
-//                trainerDetails.setCreatedby(loggedinuserid);
-//                trainerDetails.setCreateddatetime(new Date());
-//
-//                setupService.addTrainer(trainerDetails);
-//            }
-//
-//
-//            System.out.println("user >> @@@ ### ");
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println(".........");
-//            return new ResponseEntity<>(new APIResponseObj("FAILURE", "SERVER_ERROR", ""), HttpStatus.OK);
-//
-//
-//        }
-//
-//        return new ResponseEntity<>(new APIResponseObj("SUCCESS", new JwtResponse(token).getToken(), ""), HttpStatus.OK);
-//
-//
-//    }
+        setupService.editTrainer(trainerDetailsVO);
+        System.out.println("user >> @@@ ### ");
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
+
+    }
+
+    @Transactional
+    @RequestMapping(value = "/add-mc", method = RequestMethod.POST)
+    public ResponseEntity<?> addMc(@RequestBody User userVO) {
+
+        System.out.println("print trainer details " + userVO.toString());
+
+        setupService.addMc(userVO);
+        System.out.println("user >> @@@ ### ");
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
+
+    }
+
+    @Transactional
+    @RequestMapping(value = "/edit-mc", method = RequestMethod.POST)
+    public ResponseEntity<?> editMc(@RequestBody User userVO) {
+
+        setupService.editMc(userVO);
+        System.out.println("user >> @@@ ### ");
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
+
+    }
+
+    // Center Admins
+
+
+    @Transactional
+    @RequestMapping(value = "/add-ca", method = RequestMethod.POST)
+    public ResponseEntity<?> addCA(@RequestBody User userVO) {
+
+        System.out.println("print ca details " + userVO.toString());
+
+        setupService.addCA(userVO);
+        System.out.println("user >> @@@ ### ");
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
+
+    }
+
+    @Transactional
+    @RequestMapping(value = "/edit-ca", method = RequestMethod.POST)
+    public ResponseEntity<?> editCA(@RequestBody User userVO) {
+
+        setupService.editCA(userVO);
+        System.out.println("user >> @@@ ### ");
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
+
+    }
+
 
     // service category
 
@@ -436,6 +315,28 @@ public class SetupController {
 
 
         return new ResponseEntity(apiResponseObj, HttpStatus.OK);
+
+
+    }
+
+    @RequestMapping(value = "/add-services", method = RequestMethod.POST)
+    public ResponseEntity<?> addServices(@RequestBody Services servicesVO) {
+        String token = "";
+        System.out.println("KLKLKL " + servicesVO.toString());
+
+        ServiceCategory sc = new ServiceCategory();
+        sc.setId(Long.valueOf(servicesVO.getSelectedcatid()));
+
+        servicesVO.setServicecategory(sc);
+
+
+        ServiceSubCategory ssc = new ServiceSubCategory();
+        ssc.setId(Long.valueOf(servicesVO.getSelectedsubcatid()));
+        servicesVO.setServicesubcategory(ssc);
+
+        setupService.addServices(servicesVO);
+
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", ""), HttpStatus.OK);
 
 
     }

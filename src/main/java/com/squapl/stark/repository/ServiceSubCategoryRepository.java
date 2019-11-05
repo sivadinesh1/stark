@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ServiceSubCategoryRepository extends JpaRepository<ServiceSubCategory, Long>, ServiceSubCategoryRepositoryCustom {
+public interface ServiceSubCategoryRepository extends JpaRepository<ServiceSubCategory, Long> {
 
     List<ServiceSubCategory> findAllByIsactive(String status);
 

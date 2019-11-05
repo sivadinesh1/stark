@@ -3,13 +3,14 @@ package com.squapl.stark.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.squapl.stark.model.security.UserRole;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@DynamicUpdate
 @Entity
 @Data
 @Table(name = "users")

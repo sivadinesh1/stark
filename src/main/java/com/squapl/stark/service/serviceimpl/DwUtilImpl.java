@@ -4,7 +4,7 @@ import com.squapl.stark.model.RawUser;
 import com.squapl.stark.model.User;
 import com.squapl.stark.model.security.UserRole;
 import com.squapl.stark.repository.RoleDao;
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class DwUtilImpl implements DwUtilService {
 
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Autowired
     RoleDao roleDao;
@@ -283,7 +283,7 @@ public class DwUtilImpl implements DwUtilService {
     }
 
     public User createUser(User user, Set<UserRole> userRoles) {
-        User localUser = userDao.findByUsername(user.getUsername());
+        User localUser = userRepository.findByUsername(user.getUsername());
 
         if (localUser != null) {
             log.info("User with username {} already exist. Nothing will be done. ", user.getUsername());
@@ -300,7 +300,7 @@ public class DwUtilImpl implements DwUtilService {
 //            user.setPrimaryAccount(accountService.createPrimaryAccount());
 //            user.setSavingsAccount(accountService.createSavingsAccount());
 
-            localUser = userDao.save(user);
+            localUser = userRepository.save(user);
         }
 
         return localUser;

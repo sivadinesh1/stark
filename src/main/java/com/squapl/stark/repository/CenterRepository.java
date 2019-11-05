@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface CenterRepository extends JpaRepository<Center, Long> {
+public interface CenterRepository extends JpaRepository<Center, Long>, CenterRepositoryCustom {
 
 
     Center findByName(String name);

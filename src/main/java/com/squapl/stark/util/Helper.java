@@ -480,20 +480,36 @@ public class Helper {
         return returnMatchName;
     }
 
+
     public JSONArray getJSONArray(String stringToParse) {
         JSONParser parser = new JSONParser();
-        JSONObject result = null;
         JSONArray jsonArray = null;
-        String email = null;
 
         try {
-            jsonArray = (JSONArray) parser.parse(stringToParse);
-
+            if (stringToParse != null) {
+                jsonArray = (JSONArray) parser.parse(stringToParse);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return jsonArray;
     }
+
+    public JSONArray getListToJSONArray(List returnList) {
+
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = null;
+
+        try {
+            if (returnList != null) {
+                jsonArray = (JSONArray) parser.parse((String) returnList.get(0));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
 
     public JSONObject getGeneric(String stringToParse) {
         JSONParser parser = new JSONParser();

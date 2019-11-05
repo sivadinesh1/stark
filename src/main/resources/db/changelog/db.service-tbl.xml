@@ -15,6 +15,15 @@
             <column name="isactive" type="varchar(1)"/>
             <column name="units_in_stock" type="integer"/>
 
+
+            <column name="sessions" type="INT"/>
+            <column name="validity" type="INT"/>
+            <column name="base_grossfee" type="DECIMAL(10, 2)"/>
+            <column name="base_tax" type="DECIMAL(10, 2)"/>
+            <column name="base_nettotal" type="INT"/>
+
+            <column name="graceperiod" type="INT"/>
+
             <column name="createdby" type="BIGSERIAL"/>
             <column name="createddatetime" type="datetime(6)"/>
             <column name="updatedby" type="BIGSERIAL"/>

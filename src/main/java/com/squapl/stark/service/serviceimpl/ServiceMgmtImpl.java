@@ -1,7 +1,12 @@
 package com.squapl.stark.service.serviceimpl;
 
+import com.squapl.stark.Exception.EntityNotFoundException;
+import com.squapl.stark.model.Center;
+import com.squapl.stark.model.Services;
+import com.squapl.stark.repository.CenterRepository;
 import com.squapl.stark.repository.RoleDao;
-import com.squapl.stark.repository.UserDao;
+import com.squapl.stark.repository.ServicesRepository;
+import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.ServiceMgmtService;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -30,7 +36,7 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
 
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Autowired
     RoleDao roleDao;
@@ -38,6 +44,21 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ServicesRepository servicesRepository;
+
+    @Autowired
+    private CenterRepository centerRepository;
+
+    public List<Services> getAllServices(String status, String centerid) {
+        Center center = centerRepository.findById(Long.valueOf(centerid)).
+                orElseThrow(() -> new EntityNotFoundException(" Center {" + centerid + "}"));
+        JSONArray resultJArr = null;
+        List<Services> service = servicesRepository.findAllByIsactiveAndCenter(status, center);
+
+        return service;
+    }
 
 
     public JSONArray getAllServices(String centerid, String categoryid, String subcategoryid) {
@@ -243,6 +264,35 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
         return count.intValue();
 
     }
+
+    public JSONArray getServiceSubCatByCat(String center_id, String category_id) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("select cast(json_agg(t) as text)");
+        sb.append(" from ( ");
+        sb.append(" select ssc.id as service_sub_category_id, ssc.name as service_sub_category, sc.id as service_category_id, sc.name as category ");
+        sb.append(" from ");
+        sb.append(" category_sub_category csc, ");
+        sb.append(" service_sub_category ssc, ");
+        sb.append(" service_category sc ");
+        sb.append(" where ");
+        sb.append(" ssc.id = csc.sub_category_id and ");
+        sb.append(" sc.id = csc.category_id and ");
+        sb.append(" csc.category_id = ? and  ");
+        sb.append(" sc.center_id = ? ");
+        sb.append("  ) t  ");
+
+        Query query = entityManager.createNativeQuery(sb.toString());
+
+        query.setParameter(1, Long.valueOf(category_id));
+        query.setParameter(2, Long.valueOf(center_id));
+
+        String returnStr = (String) query.getSingleResult();
+        return helper.getJSONArray(returnStr);
+
+
+    }
+
 
 }
 
