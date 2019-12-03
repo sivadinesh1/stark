@@ -9,14 +9,14 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "member_services")
-public class MemberServices {
+public class MemberServices extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    private User custuser;
+    private Users custuser;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
@@ -24,7 +24,7 @@ public class MemberServices {
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
-    private User trainuser;
+    private Users trainuser;
 
 
     private BigDecimal grossfee;
@@ -39,10 +39,6 @@ public class MemberServices {
     private Date startdate;
     private Date enddate;
 
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
 
 }
 

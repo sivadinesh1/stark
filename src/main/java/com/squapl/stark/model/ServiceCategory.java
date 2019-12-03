@@ -5,7 +5,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +13,7 @@ import java.util.Set;
 @DynamicUpdate
 
 @Table(name = "service_category")
-public class ServiceCategory implements Serializable {
+public class ServiceCategory extends Auditable<String> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,10 +26,7 @@ public class ServiceCategory implements Serializable {
     private String name;
     private String description;
     private String isactive;
-    private Long createdby;
-    private Date createddatetime;
-    private Long updatedby;
-    private Date updateddatetime;
+
     @OneToMany(mappedBy = "serviceCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<CategorySubCategory> categorySubCategories = new HashSet<>();
@@ -90,37 +86,37 @@ public class ServiceCategory implements Serializable {
         this.isactive = isactive;
     }
 
-    public Long getCreatedby() {
-        return createdby;
-    }
-
-    public void setCreatedby(Long createdby) {
-        this.createdby = createdby;
-    }
-
-    public Date getCreateddatetime() {
-        return createddatetime;
-    }
-
-    public void setCreateddatetime(Date createddatetime) {
-        this.createddatetime = createddatetime;
-    }
-
-    public Long getUpdatedby() {
-        return updatedby;
-    }
-
-    public void setUpdatedby(Long updatedby) {
-        this.updatedby = updatedby;
-    }
-
-    public Date getUpdateddatetime() {
-        return updateddatetime;
-    }
-
-    public void setUpdateddatetime(Date updateddatetime) {
-        this.updateddatetime = updateddatetime;
-    }
+//    public Long getCreatedby() {
+//        return createdby;
+//    }
+//
+//    public void setCreatedby(Long createdby) {
+//        this.createdby = createdby;
+//    }
+//
+//    public Date getCreateddatetime() {
+//        return createddatetime;
+//    }
+//
+//    public void setCreateddatetime(Date createddatetime) {
+//        this.createddatetime = createddatetime;
+//    }
+//
+//    public Long getUpdatedby() {
+//        return updatedby;
+//    }
+//
+//    public void setUpdatedby(Long updatedby) {
+//        this.updatedby = updatedby;
+//    }
+//
+//    public Date getUpdateddatetime() {
+//        return updateddatetime;
+//    }
+//
+//    public void setUpdateddatetime(Date updateddatetime) {
+//        this.updateddatetime = updateddatetime;
+//    }
 
     public Set<CategorySubCategory> getCategorySubCategories() {
         return categorySubCategories;

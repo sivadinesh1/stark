@@ -1,8 +1,9 @@
 package com.squapl.stark.controllers;
 
 import com.squapl.stark.config.JwtTokenUtil;
-import com.squapl.stark.model.*;
-import com.squapl.stark.model.security.UserRole;
+import com.squapl.stark.model.JwtRequest;
+import com.squapl.stark.model.JwtResponse;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.repository.RoleDao;
 import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
@@ -20,13 +21,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -61,7 +58,7 @@ public class JwtAuthenticationController {
             System.out.println("TEST.. " + e.getMessage());
 
             if (e.getMessage().equalsIgnoreCase("INVALID_CREDENTIALS")) {
-                User user = userRepository.findByUsername(authenticationRequest.getUsername());
+                Users user = userRepository.findByUsername(authenticationRequest.getUsername());
                 if (user == null) {
                     return new ResponseEntity<>(new APIResponseObj("FAILURE", "USER_NOT_FOUND", ""), HttpStatus.OK);
                 } else {
@@ -75,7 +72,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        User user = userRepository.findByUsername(userDetails.getUsername());
+        Users user = userRepository.findByUsername(userDetails.getUsername());
 
         userService.assignRoleValues(userDetails, user);
 
@@ -89,82 +86,81 @@ public class JwtAuthenticationController {
         return new ResponseEntity<>(new APIResponseObj("SUCCESS", new JwtResponse(token).getToken(), user), HttpStatus.OK);
     }
 
-    @Transactional
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-        String token = "";
-        User user1 = null;
-        String username = user.getUsername();
-        try {
-
-
-            user1 = new User();
-            user1.setUsername(username);
-            user1.setPassword(user.getPassword());
-
-            Set<UserRole> userRoles = new HashSet<>();
-            userRoles.add(new UserRole(user1, roleDao.findByName("MEMBER")));
-
-            RawUser rawUser = dwUtilService.getRawUserDetails(username);
-
-            System.out.println("Raw User >>> " + rawUser);
-
-            if (rawUser == null) {
-                System.out.println("in...");
-                return new ResponseEntity<>(new APIResponseObj("FAILURE", "USER_NOT_EXIST", ""), HttpStatus.OK);
-            } else {
-
-                User tmpUser = userService.getUserDetails(username);
-
-                if (tmpUser != null) {
-                    return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_USER", ""), HttpStatus.OK);
-
-                }
-
-                long centerid = rawUser.getCenterid();
-
-                Long serviceId = dwUtilService.getServiceId(String.valueOf(centerid), "1");
-
-                Center tempCenter = new Center();
-                tempCenter.setId(centerid);
-
-                user1.setCenter(tempCenter);
-                user1.setVerified("N");
-                user1.setMobilenumber(username);
-                user1.setRole("member");
-                user1.setSignup_mode("E"); // E - Email
-                user1.setStatus("A");
-                user1.setFirstname(rawUser.getFirstname());
-
-                User newUser = userService.createUser(user1, userRoles);
-
-                if (newUser != null) {
-
-
-                    userService.insertMember_services(String.valueOf(newUser.getId()), serviceId,
-                            rawUser.getStartdate(), rawUser.getEnddate());
-
-
-                    final UserDetails userDetails = userDetailsService
-                            .loadUserByUsername(user.getUsername());
-                    token = jwtTokenUtil.generateToken(userDetails);
-                }
-            }
-
-
-        } catch (Exception e) {
-            if (e.toString().indexOf("uname_uniq") != -1) {
-                return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_USER", ""), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new APIResponseObj("FAILURE", "SERVER_ERROR", ""), HttpStatus.OK);
-            }
-
-        }
-
-        return new ResponseEntity<>(new APIResponseObj("SUCCESS", new JwtResponse(token).getToken(), user1), HttpStatus.OK);
-//        return new ResponseEntity<>(new APIResponseObj("SUCCESS", HttpStatus.OK, "", new JwtResponse(token)), HttpStatus.OK);
-
-    }
+//    @Transactional
+//    @RequestMapping(value = "/register", method = RequestMethod.POST)
+//    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+//        String token = "";
+//        Users user1 = null;
+//        String username = user.getUsername();
+//        try {
+//
+//
+//            user1 = new Users();
+//            user1.setUsername(username);
+//            user1.setPassword(user.getPassword());
+//
+//            Set<UserRole> userRoles = new HashSet<>();
+//            userRoles.add(new UserRole(user1, roleDao.findByName("MEMBER")));
+//
+//            RawUser rawUser = dwUtilService.getRawUserDetails(username);
+//
+//            System.out.println("Raw User >>> " + rawUser);
+//
+//            if (rawUser == null) {
+//                System.out.println("in...");
+//                return new ResponseEntity<>(new APIResponseObj("FAILURE", "USER_NOT_EXIST", ""), HttpStatus.OK);
+//            } else {
+//
+//                Users tmpUser = userService.getUserDetails(username);
+//
+//                if (tmpUser != null) {
+//                    return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_USER", ""), HttpStatus.OK);
+//
+//                }
+//
+//                long centerid = rawUser.getCenterid();
+//
+//                Long serviceId = dwUtilService.getServiceId(String.valueOf(centerid), "1");
+//
+//                Center tempCenter = new Center();
+//                tempCenter.setId(centerid);
+//
+//                user1.setCenter(tempCenter);
+//                user1.setVerified("N");
+//                user1.setMobilenumber(username);
+//                user1.setRole("member");
+//                user1.setSignup_mode("E"); // E - Email
+//                user1.setStatus("A");
+//                user1.setFirstname(rawUser.getFirstname());
+//
+//                Users newUser = userService.createUser(user1, userRoles);
+//
+//                if (newUser != null) {
+//
+//
+//                    userService.insertMember_services(String.valueOf(newUser.getId()), serviceId,
+//                            rawUser.getStartdate(), rawUser.getEnddate());
+//
+//
+//                    final UserDetails userDetails = userDetailsService
+//                            .loadUserByUsername(user.getUsername());
+//                    token = jwtTokenUtil.generateToken(userDetails);
+//                }
+//            }
+//
+//
+//        } catch (Exception e) {
+//            if (e.toString().indexOf("uname_uniq") != -1) {
+//                return new ResponseEntity<>(new APIResponseObj("FAILURE", "DUPLICATE_USER", ""), HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(new APIResponseObj("FAILURE", "SERVER_ERROR", ""), HttpStatus.OK);
+//            }
+//
+//        }
+//
+//        return new ResponseEntity<>(new APIResponseObj("SUCCESS", new JwtResponse(token).getToken(), user1), HttpStatus.OK);
+//
+//    }
 
     private void authenticate(String username, String password) throws Exception {
         try {
@@ -178,11 +174,11 @@ public class JwtAuthenticationController {
 
 
     @GetMapping(value = "/getuserinfo/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUserInfo(@PathVariable("username") String username) {
+    public ResponseEntity<Users> getUserInfo(@PathVariable("username") String username) {
 
-        User user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
 
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<Users>(user, HttpStatus.OK);
 
     }
 

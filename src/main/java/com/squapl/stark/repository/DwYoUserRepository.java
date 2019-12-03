@@ -1,13 +1,13 @@
 package com.squapl.stark.repository;
 
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface DwYoUserRepository extends CrudRepository<User, Integer> {
+public interface DwYoUserRepository extends CrudRepository<Users, Integer> {
 
-    User findByUsername(String username);
+    Users findByUsername(String username);
 
 }

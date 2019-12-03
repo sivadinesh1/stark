@@ -9,6 +9,7 @@ import com.squapl.stark.repository.*;
 import com.squapl.stark.service.SetupService;
 import com.squapl.stark.service.UserService;
 import com.squapl.stark.util.APIResponseObj;
+import com.squapl.stark.util.CustomHelper;
 import com.squapl.stark.util.Helper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,9 @@ public class SetupImpl implements SetupService {
     @Autowired
     private ServicesRepository servicesRepository;
 
+    @Autowired
+    private CustomHelper customHelper;
+
 //    Corporates - addCorporates, getAllCorporates, getCorporatesCount, updateCorporate,
 
     public APIResponseObj addCorporates(Corporate corporateVO) {
@@ -73,7 +77,7 @@ public class SetupImpl implements SetupService {
         JsonNode detailsNode = corporateVO.getDetails();
         String phonenumber = detailsNode.path("contact").get("phone").asText();
 
-        User tmpUser = userRepository.findByMobilenumber(phonenumber);
+        Users tmpUser = userRepository.findByMobilenumber(phonenumber);
 
         if (tmpUser != null) {
             throw new EntityAlreadyPresentException("Phone");
@@ -87,7 +91,7 @@ public class SetupImpl implements SetupService {
             Corporate tmpCorporate = corporateRepository.save(corporateVO);
 
             if (tmpCorporate != null) {
-                User user = createUser(phonenumber, corporateVO.getName(), phonenumber, String.valueOf(corporateVO.getCreatedby()), "CORPORATE", tmpCorporate, null);
+                Users user = createUser(phonenumber, corporateVO.getName(), phonenumber, customHelper.getLoggedInUserName(), "CORPORATE", tmpCorporate, null);
             }
 
         }
@@ -118,7 +122,7 @@ public class SetupImpl implements SetupService {
         JsonNode detailsNode = centerVO.getDetails();
         String phonenumber = detailsNode.path("contact").get("phone").asText();
 
-        User tmpUser = userRepository.findByMobilenumber(phonenumber);
+        Users tmpUser = userRepository.findByMobilenumber(phonenumber);
 
         if (tmpUser != null) {
             throw new EntityAlreadyPresentException("Phone");
@@ -132,7 +136,7 @@ public class SetupImpl implements SetupService {
             Center tmpCenter = centerRepository.save(centerVO);
 
             if (tmpCenter != null) {
-                User user = createUser(phonenumber, centerVO.getName(), phonenumber, String.valueOf(centerVO.getCreatedby()), "CENTER_ADMIN", null, tmpCenter);
+                Users user = createUser(phonenumber, centerVO.getName(), phonenumber, String.valueOf(customHelper.getLoggedInUserName()), "CENTER_ADMIN", null, tmpCenter);
             }
 
         }
@@ -174,7 +178,7 @@ public class SetupImpl implements SetupService {
 
     public TrainerDetails addTrainer(TrainerDetails trainerDetailsVO) {
 
-        User user = trainerDetailsVO.getTrainuser();
+        Users user = trainerDetailsVO.getTrainuser();
         user.setPassword("111111");
 
 
@@ -182,7 +186,7 @@ public class SetupImpl implements SetupService {
         userRoles.add(new UserRole(user, roleDao.findByName("TRAINER")));
         System.out.println("user roles >> " + userRoles.toString());
 
-        User trainUser = userService.createUser(user, userRoles);
+        Users trainUser = userService.createUser(user, userRoles);
 
         trainerDetailsVO.setTrainuser(trainUser);
 
@@ -202,32 +206,32 @@ public class SetupImpl implements SetupService {
         return newTrainerDetails;
     }
 
-    public User addMc(User userVO) {
+    public Users addMc(Users userVO) {
         userVO.setPassword("111111");
         Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(new UserRole(userVO, roleDao.findByName("MEMBER_COORDINATOR")));
         System.out.println("user roles >> " + userRoles.toString());
 
-        return (User) userService.createUser(userVO, userRoles);
+        return (Users) userService.createUser(userVO, userRoles);
     }
 
 
-    public int editMc(User userVO) {
+    public int editMc(Users userVO) {
         return userRepository.updateMcInfo(userVO);
 
     }
 
-    public User addCA(User userVO) {
+    public Users addCA(Users userVO) {
         userVO.setPassword("111111");
         Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(new UserRole(userVO, roleDao.findByName("CENTER_ADMIN")));
         System.out.println("user roles >> " + userRoles.toString());
 
-        return (User) userService.createUser(userVO, userRoles);
+        return (Users) userService.createUser(userVO, userRoles);
     }
 
 
-    public int editCA(User userVO) {
+    public int editCA(Users userVO) {
         return userRepository.updateCAInfo(userVO);
 
     }
@@ -361,7 +365,7 @@ public class SetupImpl implements SetupService {
         } else if (entity.equalsIgnoreCase("corporate")) {
             corporateRepository.setStatusForCorporate(id, status, loggedinuserid, whenupdate);
         } else if (entity.equalsIgnoreCase("center")) {
-            centerRepository.setStatusForCenter(id, status, loggedinuserid, whenupdate);
+            centerRepository.setStatusForCenter(id, status, customHelper.getLoggedInUserName(), whenupdate);
         }
 
 
@@ -369,19 +373,19 @@ public class SetupImpl implements SetupService {
     }
 
     @Transactional
-    public User createUser(String username, String firstname, String phonenumber, String loggedinuserid, String role, Corporate corporate, Center center) {
+    public Users createUser(String username, String firstname, String phonenumber, String loggedinuserid, String role, Corporate corporate, Center center) {
         String token = "";
-        User user = null;
+        Users user = null;
 
         System.out.println("22222222");
-        user = new User();
+        user = new Users();
         user.setUsername(username);
         user.setPassword("111111");
         user.setMobilenumber(phonenumber);
         user.setVerified("N");
         user.setStatus("A");
-        user.setCreatedby(Long.valueOf(loggedinuserid));
-        user.setCreateddatetime(new Date());
+        //   user.setCreatedby(Long.valueOf(loggedinuserid));
+        //   user.setCreateddatetime(new Date());
         user.setFirstname(firstname);
         user.setCorporate(corporate);
         user.setCenter(center);
@@ -389,7 +393,7 @@ public class SetupImpl implements SetupService {
         Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(new UserRole(user, roleDao.findByName(role)));
 
-        User newUser = userService.createUser(user, userRoles);
+        Users newUser = userService.createUser(user, userRoles);
 
 
         return newUser;

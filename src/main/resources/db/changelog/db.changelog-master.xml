@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="db/changelog/db.migration-tbl.xml"/>
+
     <include file="db/changelog/db.dw-mappings-tbl.xml"/>
 
     <include file="db/changelog/db.corporate-details-tbl.xml"/>
@@ -39,18 +39,24 @@
     <include file="db/changelog/db.dw-user-tbl.xml"/>
     <include file="db/changelog/db.raw-user-tbl.xml"/>
 
-    <include file="db/changelog/db.enq-trial-tbl.xml"/>
-    <include file="db/changelog/db.enq-prospects-tbl.xml"/>
 
     <include file="db/changelog/db.enquiry-tbl.xml"/>
+    <include file="db/changelog/db.enq-trial-tbl.xml"/>
     <include file="db/changelog/db.enq-follow-ups-tbl.xml"/>
 
-    <include file="db/changelog/db.enq-service-trial-tbl.xml"/>
-
-    <include file="db/changelog/db.enq-user-type-tbl.xml"/>
-
-
 </databaseChangeLog>
+
+
+        <!-- to be implemented
+
+        COLUMN          DATATYPE       CONSTRAINTS
+        serv_cat_id     bigint         (enq_serv_cat_id) service_category.id
+        firstname       varchar(45)     none
+        lastname        varchar(45)     none
+        mobilenumber    varchar(45)     none
+        email           varchar(100)    none
+        gender          varchar(20)     none
+        -->
 
 
 

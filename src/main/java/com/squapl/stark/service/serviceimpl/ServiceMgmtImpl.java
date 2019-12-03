@@ -60,6 +60,13 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
         return service;
     }
 
+    public JSONArray getServices(String status, String centerid, String service_category_id) {
+        JSONArray resultJArr = servicesRepository.getServices(status, centerid, service_category_id);
+
+
+        return resultJArr;
+    }
+
 
     public JSONArray getAllServices(String centerid, String categoryid, String subcategoryid) {
 
@@ -135,7 +142,7 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
                     " u.profileimgurl as profile_image, " +
                     " u.status as status, " +
                     " u.dob as dob, " +
-                    " td.category as category, " +
+                    " td.level as category, " +
                     " td.trainerfee as trainer_fee " +
                     " from " +
                     " users u, " +
@@ -144,7 +151,7 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
                     " where " +
                     " u.id = ur.user_id and " +
                     " td.userid = u.id and " +
-                    " ur.role_id in (2) and " +
+                    " ur.role_id in (4) and " +
                     " u.center_id = " + centerid + " ) t ");
 
             resultJArr = helper.getJSONArray((String) (query.getResultList().get(0)));
@@ -174,19 +181,19 @@ public class ServiceMgmtImpl implements ServiceMgmtService {
                     " sc.name as service_category, " +
                     " ssc.id as service_sub_category_id, " +
                     " ssc.name as service_sub_category_name, " +
-                    " sd.sessions as sessions, " +
-                    " sd.validity as validity, " +
-                    " sd.graceperiod as grace_period, " +
-                    " sd.base_grossfee as base_gross_fee, " +
-                    " sd.base_nettotal as base_net_total, " +
-                    " sd.base_tax as base_tax " +
+                    " s.sessions as sessions, " +
+                    " s.validity as validity, " +
+                    " s.graceperiod as grace_period, " +
+                    " s.base_grossfee as base_gross_fee, " +
+                    " s.base_nettotal as base_net_total, " +
+                    " s.base_tax as base_tax " +
                     " from " +
-                    " service_details sd, " +
+
                     " service s, " +
                     " service_category sc, " +
                     " service_sub_category ssc " +
                     " where " +
-                    " s.id = sd.service_id and " +
+
                     " s.service_category_id = sc.id and " +
                     " s.service_sub_category_id = ssc.id and " +
                     " s.center_id = " + centerid + " ) t ");

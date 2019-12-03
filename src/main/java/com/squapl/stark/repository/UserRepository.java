@@ -1,15 +1,15 @@
 package com.squapl.stark.repository;
 
 
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
-    User findByUsername(String username);
+public interface UserRepository extends JpaRepository<Users, Long>, UserRepositoryCustom {
+    Users findByUsername(String username);
 
-    User findByMobilenumber(String phone);
+    Users findByMobilenumber(String phone);
 
 
 }

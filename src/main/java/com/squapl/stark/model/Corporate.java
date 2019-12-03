@@ -8,7 +8,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @DynamicUpdate
 @Entity
@@ -18,7 +17,7 @@ import java.util.Date;
         typeClass = JsonBinaryType.class
 )
 @Table(name = "corporate_details")
-public class Corporate {
+public class Corporate extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -33,9 +32,5 @@ public class Corporate {
 
     private String isactive;
 
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
 
 }

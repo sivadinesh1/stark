@@ -33,14 +33,14 @@ public interface SetupService {
     public TrainerDetails editTrainer(TrainerDetails trainerDetails);
 
     // MC
-    public User addMc(User userVO);
+    public Users addMc(Users userVO);
 
-    public int editMc(User userVO);
+    public int editMc(Users userVO);
 
     // CA
-    public User addCA(User userVO);
+    public Users addCA(Users userVO);
 
-    public int editCA(User userVO);
+    public int editCA(Users userVO);
 
 
     // service category

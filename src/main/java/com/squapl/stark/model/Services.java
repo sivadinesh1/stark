@@ -4,12 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Data
 @Table(name = "service")
-public class Services {
+public class Services extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -46,10 +45,7 @@ public class Services {
     private int base_nettotal;
     private int graceperiod;
 
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
+
 }
 
 

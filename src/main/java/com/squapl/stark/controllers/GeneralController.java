@@ -1,7 +1,7 @@
 package com.squapl.stark.controllers;
 
 import com.squapl.stark.Exception.EntityNotFoundException;
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.DwUtilService;
 import com.squapl.stark.service.GeneralService;
@@ -41,7 +41,7 @@ public class GeneralController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCenterWiseInfo(@PathVariable("userid") String userid, @PathVariable("role") String role) {
 
-        User user = userRepository.findById(Long.valueOf(userid))
+        Users user = userRepository.findById(Long.valueOf(userid))
                 .orElseThrow(() -> new EntityNotFoundException("userid {" + userid + "}"));
 
         String corporate_id = null;
@@ -71,7 +71,7 @@ public class GeneralController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllProfiles(@PathVariable("center_id") String center_id, @PathVariable("role_id") String role_id, @PathVariable("status") String status) {
 
-        List<User> restultJArr = generalService.getAllProfiles(center_id, role_id, status);
+        List<Users> restultJArr = generalService.getAllProfiles(center_id, role_id, status);
 
         return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", restultJArr), HttpStatus.OK);
     }

@@ -579,4 +579,42 @@ public class Helper {
                 .collect(Collectors.toList());
     }
 
+
+    public String calculateBMI(double weightInKilos, int heightInCms) {
+        String resultBMI = "Obese";
+
+        //convert measurements
+        double heightInMeters = ((double) heightInCms / 100);
+        double bmi = Math.round((weightInKilos / Math.pow(heightInMeters, 2.0)) * 100) / 100.0;
+        //display output
+        System.out.println("Your BMI is: " + bmi);
+
+        //interpret BMI
+        if (bmi < 18.5) {
+            System.out.print("Underweight");
+            resultBMI = "Underweight";
+        } else if (bmi >= 18.5 && bmi < 25) {
+            System.out.print("Normal");
+            resultBMI = "Normal";
+        } else if (bmi >= 25 && bmi < 30) {
+            System.out.print("Overweight");
+            resultBMI = "Overweight";
+        }
+
+        return resultBMI;
+
+    }
+
+    public int calculateBMI(double weightInKilos, int heightInCms, int ageInYears, String gender) {
+        int bmr = 0;
+
+        if (gender.equalsIgnoreCase("M")) {
+            bmr = (int) Math.ceil(88.362 + (13.397 * weightInKilos) + (4.799 * heightInCms) - (5.677 * ageInYears));
+        } else {
+            bmr = (int) Math.ceil(447.593 + (9.247 * weightInKilos) + (3.098 * heightInCms) - (4.330 * ageInYears));
+        }
+
+        return bmr;
+    }
+
 }

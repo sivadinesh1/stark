@@ -9,6 +9,8 @@ public interface ServiceMgmtService {
 
 //    public JSONArray getAllServices(String centerid, String category, String subcategory);
 
+    public JSONArray getServices(String status, String centerid, String service_category_id);
+
     public List<Services> getAllServices(String status, String centerid);
 
     public JSONArray getTrainers(String centerid);

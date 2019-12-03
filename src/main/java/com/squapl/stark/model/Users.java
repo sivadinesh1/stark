@@ -1,20 +1,22 @@
 package com.squapl.stark.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.squapl.stark.model.security.Authority;
 import com.squapl.stark.model.security.UserRole;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @DynamicUpdate
-@Entity
+@Entity(name = "users")
 @Data
-@Table(name = "users")
-public class User {
+public class Users extends Auditable<String> implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,11 +50,9 @@ public class User {
     private String gender;
     private String dob;
     private String signup_mode;
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
 
+    private Boolean enabled = true;
+//    private String type;
 
     //  The user in mappedBy is telling Hibernate where to find the configuration for the JoinColumn.
     // Go look over on the bean property named 'user' on the thing I have a collection of to find the configuration.
@@ -66,4 +66,51 @@ public class User {
     }
 
 
+//    public void setIsadmin(String isadmin) {
+//        this.isadmin = isadmin;
+//    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
 }
+
+
+// DND
+//package com.squapl.stark.model;
+//
+//        import lombok.Data;
+//
+//@Data
+//public class UserDTO {
+//    private String username;
+//    private String password;
+//}

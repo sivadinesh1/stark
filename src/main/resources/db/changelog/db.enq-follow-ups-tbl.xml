@@ -8,8 +8,10 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="enq_id" type="BIGSERIAL"/>
-            <column name="notes" type="varchar(50)"/>
-
+            <column name="mode" type="varchar(50)"/>
+            <column name="notes" type="varchar(100)"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="followupon" type="datetime(6)"/>
 
             <column name="createdby" type="integer"/>
             <column name="createddatetime" type="datetime(6)"/>
@@ -20,7 +22,7 @@
     </changeSet>
 
     <changeSet author="squapl" id="enq_follow_ups_fk">
-        <addForeignKeyConstraint baseColumnNames="enquiry_id" baseTableName="enq_follow_ups"
+        <addForeignKeyConstraint baseColumnNames="enq_id" baseTableName="enq_follow_ups"
                                  constraintName="enq_follow_ups_fk"
                                  referencedColumnNames="id" referencedTableName="enquiry"/>
     </changeSet>

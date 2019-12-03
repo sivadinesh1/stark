@@ -1,7 +1,7 @@
 package com.squapl.stark.service.serviceimpl;
 
 import com.squapl.stark.model.RawUser;
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.model.security.UserRole;
 import com.squapl.stark.repository.RoleDao;
 import com.squapl.stark.repository.UserRepository;
@@ -282,8 +282,8 @@ public class DwUtilImpl implements DwUtilService {
 
     }
 
-    public User createUser(User user, Set<UserRole> userRoles) {
-        User localUser = userRepository.findByUsername(user.getUsername());
+    public Users createUser(Users user, Set<UserRole> userRoles) {
+        Users localUser = userRepository.findByUsername(user.getUsername());
 
         if (localUser != null) {
             log.info("User with username {} already exist. Nothing will be done. ", user.getUsername());

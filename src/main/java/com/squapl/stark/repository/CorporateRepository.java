@@ -20,7 +20,7 @@ public interface CorporateRepository extends JpaRepository<Corporate, Long> {
     List<Corporate> findByIsactiveOrderByNameAsc(String status);
 
     @Modifying
-    @Query("update Corporate cd set cd.isactive = :status, cd.updatedby = :updatedby, cd.updateddatetime = :updateddatetime  where cd.id = :id")
+    @Query("update Corporate cd set cd.isactive = :status, cd.lastModifiedBy = :updatedby, cd.lastModifiedDateTime = :updateddatetime  where cd.id = :id")
     public int setStatusForCorporate(@Param("id") Long id, @Param("status") String status, @Param("updatedby") Long updatedby, @Param("updateddatetime") Date updateddatetime);
 
 

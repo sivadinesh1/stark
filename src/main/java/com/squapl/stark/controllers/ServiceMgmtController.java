@@ -37,7 +37,21 @@ public class ServiceMgmtController {
     private Helper helper;
 
     @RequestMapping(
-            value = "/getallservices/{status}/{center_id}",
+            value = "/getservices/{status}/{center_id}/{service_category_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServices(@PathVariable("status") String status,
+                                      @PathVariable("center_id") String center_id, @PathVariable("service_category_id") String service_category_id
+    ) {
+
+        JSONArray restultJArr = serviceMgmtService.getServices(status, center_id, service_category_id);
+
+        return new ResponseEntity<>(new APIResponseObj("SUCCESS", "", restultJArr), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(
+            value = "/getservices/{status}/{center_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllServices(@PathVariable("status") String status,

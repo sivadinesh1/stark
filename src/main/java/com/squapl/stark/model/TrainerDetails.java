@@ -4,28 +4,22 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @DynamicUpdate
 @Entity
 @Data
 @Table(name = "trainer_details")
-public class TrainerDetails {
+public class TrainerDetails extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
-    private User trainuser;
+    private Users trainuser;
 
     private String level;
     private int trainerfee;
-
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
 
 
 }

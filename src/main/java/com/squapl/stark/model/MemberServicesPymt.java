@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "member_services_pymt")
-public class MemberServicesPymt {
+public class MemberServicesPymt extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,8 +25,5 @@ public class MemberServicesPymt {
     private int bal_to_pay;
     private Date paid_date;
 
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
+
 }

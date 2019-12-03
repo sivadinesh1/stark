@@ -1,8 +1,7 @@
 package com.squapl.stark.service;
 
 
-import com.squapl.stark.model.User;
-import com.squapl.stark.model.UserDTO;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.model.security.Authority;
 import com.squapl.stark.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -47,10 +46,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
 
-    public User save(UserDTO user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
-    }
+//    public Users save(UserDTO user) {
+//        Users newUser = new Users();
+//        newUser.setUsername(user.getUsername());
+//        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+//        return userRepository.save(newUser);
+//    }
 }

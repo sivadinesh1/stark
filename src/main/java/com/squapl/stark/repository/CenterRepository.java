@@ -25,7 +25,7 @@ public interface CenterRepository extends JpaRepository<Center, Long>, CenterRep
     Long countByIsactiveAndCorporate(String status, Corporate corporate);
 
     @Modifying
-    @Query("update Center cd set cd.isactive = :status, cd.updatedby = :updatedby, cd.updateddatetime = :updateddatetime  where cd.id = :id")
-    public int setStatusForCenter(@Param("id") Long id, @Param("status") String status, @Param("updatedby") Long updatedby, @Param("updateddatetime") Date updateddatetime);
+    @Query("update Center cd set cd.isactive = :status, cd.lastModifiedBy = :updatedby, cd.lastModifiedDateTime = :updateddatetime  where cd.id = :id")
+    public int setStatusForCenter(@Param("id") Long id, @Param("status") String status, @Param("updatedby") String updatedby, @Param("updateddatetime") Date updateddatetime);
 
 }

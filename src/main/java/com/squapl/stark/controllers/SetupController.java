@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -119,6 +121,9 @@ public class SetupController {
     public ResponseEntity<?> addCenter(@RequestBody Center centerVO) {
         String token = "";
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = user.getUsername(); //get logged in username
+        System.out.println("............." + name);
         APIResponseObj apiResponseObj = setupService.addCenter(centerVO);
         return new ResponseEntity<>(apiResponseObj, HttpStatus.OK);
 
@@ -149,7 +154,7 @@ public class SetupController {
 
     @Transactional
     @RequestMapping(value = "/add-mc", method = RequestMethod.POST)
-    public ResponseEntity<?> addMc(@RequestBody User userVO) {
+    public ResponseEntity<?> addMc(@RequestBody Users userVO) {
 
         System.out.println("print trainer details " + userVO.toString());
 
@@ -161,7 +166,7 @@ public class SetupController {
 
     @Transactional
     @RequestMapping(value = "/edit-mc", method = RequestMethod.POST)
-    public ResponseEntity<?> editMc(@RequestBody User userVO) {
+    public ResponseEntity<?> editMc(@RequestBody Users userVO) {
 
         setupService.editMc(userVO);
         System.out.println("user >> @@@ ### ");
@@ -174,7 +179,7 @@ public class SetupController {
 
     @Transactional
     @RequestMapping(value = "/add-ca", method = RequestMethod.POST)
-    public ResponseEntity<?> addCA(@RequestBody User userVO) {
+    public ResponseEntity<?> addCA(@RequestBody Users userVO) {
 
         System.out.println("print ca details " + userVO.toString());
 
@@ -186,7 +191,7 @@ public class SetupController {
 
     @Transactional
     @RequestMapping(value = "/edit-ca", method = RequestMethod.POST)
-    public ResponseEntity<?> editCA(@RequestBody User userVO) {
+    public ResponseEntity<?> editCA(@RequestBody Users userVO) {
 
         setupService.editCA(userVO);
         System.out.println("user >> @@@ ### ");

@@ -1,9 +1,8 @@
 package com.squapl.stark.model.security;
 
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 
 @Entity
@@ -14,17 +13,17 @@ public class UserRole {
 //    private BigInteger id;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public UserRole(User user, Role role) {
+    public UserRole(Users user, Role role) {
         this.user = user;
         this.role = role;
     }
@@ -34,11 +33,11 @@ public class UserRole {
     }
 
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

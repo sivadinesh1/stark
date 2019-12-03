@@ -8,21 +8,18 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="center_id" type="BIGSERIAL"/>
-            <column name="e_user_id" type="BIGSERIAL"/>
-            <column name="p_user_id" type="BIGSERIAL"/>
 
             <column name="service_id" type="BIGSERIAL"/>
 
             <column name="status" type="varchar(20)"/>
-            <column name="trial_status" type="varchar(20)"/>
-            <column name="trial_pack" type="BIGSERIAL"/>
 
-            <column name="enquiry_datetime" type="datetime(6)"/>
-            <column name="enquiry_closure_datetime" type="datetime(6)"/>
+
+            <column name="enq_start" type="datetime(6)"/>
+            <column name="enq_close" type="datetime(6)"/>
 
             <column name="lead_source" type="varchar(80)"/>
-            <column name="nxt_followup_datetime" type="datetime(6)"/>
-            <column name="status_notes" type="varchar(80)"/>
+
+            <column name="notes" type="varchar(100)"/>
 
             <column name="createdby" type="integer"/>
             <column name="createddatetime" type="datetime(6)"/>
@@ -32,11 +29,6 @@
         </createTable>
     </changeSet>
 
-
-    <changeSet author="squapl" id="e_userid_fk">
-        <addForeignKeyConstraint baseColumnNames="e_user_id" baseTableName="enquiry" constraintName="e_userid_fk"
-                                 referencedColumnNames="id" referencedTableName="users"/>
-    </changeSet>
 
     <changeSet author="squapl" id="e_centerid_fk">
         <addForeignKeyConstraint baseColumnNames="center_id" baseTableName="enquiry" constraintName="e_centerid_fk"
@@ -48,15 +40,6 @@
                                  referencedColumnNames="id" referencedTableName="enq_prospects"/>
     </changeSet>
 
-    <changeSet author="squapl" id="a_userid_fk">
-        <addForeignKeyConstraint baseColumnNames="assigned_to" baseTableName="enquiry" constraintName="a_userid_fk"
-                                 referencedColumnNames="id" referencedTableName="users"/>
-    </changeSet>
-
-    <changeSet author="squapl" id="trial_pack_fk">
-        <addForeignKeyConstraint baseColumnNames="trial_pack" baseTableName="enquiry" constraintName="trial_pack_fk"
-                                 referencedColumnNames="id" referencedTableName="enq_trial"/>
-    </changeSet>
 
     <changeSet author="squapl" id="enquiry_service_fk">
         <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="enquiry"
@@ -64,10 +47,5 @@
                                  referencedColumnNames="id" referencedTableName="service"/>
     </changeSet>
 
-    <changeSet author="squapl" id="enquiry_service_category_fk">
-        <addForeignKeyConstraint baseColumnNames="service_category_id" baseTableName="enquiry"
-                                 constraintName="enquiry_service_category_fk"
-                                 referencedColumnNames="id" referencedTableName="service_category"/>
-    </changeSet>
 
 </databaseChangeLog>

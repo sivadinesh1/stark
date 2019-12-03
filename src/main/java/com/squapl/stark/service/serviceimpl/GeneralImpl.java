@@ -1,6 +1,6 @@
 package com.squapl.stark.service.serviceimpl;
 
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.repository.CenterRepository;
 import com.squapl.stark.repository.UserRepository;
 import com.squapl.stark.service.GeneralService;
@@ -35,7 +35,7 @@ public class GeneralImpl implements GeneralService {
     }
 
 
-    public List<User> getAllProfiles(String center_id, String role_id, String status) {
+    public List<Users> getAllProfiles(String center_id, String role_id, String status) {
         List userList = userRepository.getAllProfiles(center_id, role_id, status);
         return userList;
     }

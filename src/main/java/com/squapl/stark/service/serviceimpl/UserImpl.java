@@ -2,7 +2,7 @@ package com.squapl.stark.service.serviceimpl;
 
 import com.squapl.stark.Exception.EntityAlreadyPresentException;
 import com.squapl.stark.model.RawUser;
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.model.security.UserRole;
 import com.squapl.stark.repository.RoleDao;
 import com.squapl.stark.repository.UserRepository;
@@ -44,8 +44,8 @@ public class UserImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
 
-    public User createUser(User user, Set<UserRole> userRoles) {
-        User localUser = userRepository.findByUsername(user.getUsername());
+    public Users createUser(Users user, Set<UserRole> userRoles) {
+        Users localUser = userRepository.findByUsername(user.getUsername());
         System.out.println("1111");
         if (localUser != null) {
             log.info("User with username {} already exist. Nothing will be done. ", user.getUsername());
@@ -89,18 +89,18 @@ public class UserImpl implements UserService {
         return rawUser;
     }
 
-    public User getUserDetails(String username) {
+    public Users getUserDetails(String username) {
 
-        User user = null;
+        Users user = null;
         System.out.println("usenae " + username);
         try {
             Query query = entityManager.createNativeQuery(
                     " select * from " +
-                            " users where username = ? ", User.class);
+                            " users where username = ? ", Users.class);
 
             query.setParameter(1, username);
 
-            user = (User) query.getSingleResult();
+            user = (Users) query.getSingleResult();
 
         } catch (NoResultException nre) {
 
@@ -129,7 +129,7 @@ public class UserImpl implements UserService {
         return rowcount;
     }
 
-    public User assignRoleValues(UserDetails userDetails, User user) {
+    public Users assignRoleValues(UserDetails userDetails, Users user) {
 
         if (Helper.hasRole("SUPER_ADMIN", userDetails)) {
             user.setRole("superadmin");

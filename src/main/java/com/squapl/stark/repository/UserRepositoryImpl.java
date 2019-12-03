@@ -2,7 +2,7 @@ package com.squapl.stark.repository;
 
 
 import com.squapl.stark.model.TrainerDetails;
-import com.squapl.stark.model.User;
+import com.squapl.stark.model.Users;
 import com.squapl.stark.util.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     @Autowired
     Helper helper;
 
-    public List<User> getAllProfiles(String center_id, String role_id, String status) {
+    public List<Users> getAllProfiles(String center_id, String role_id, String status) {
 
         Query query = entityManager.createNativeQuery(
                 " select u.* " +
@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                         " u.id = ur.user_id and " +
                         " u.center_id = ? and " +
                         " u.status = ? and " +
-                        " ur.role_id= ? ", User.class);
+                        " ur.role_id= ? ", Users.class);
 
         query.setParameter(1, Long.valueOf(center_id));
         query.setParameter(2, status);
@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
         // String tempStr = (String) (query.getResultList().get(0));
 
-        return (List<User>) query.getResultList();
+        return (List<Users>) query.getResultList();
 
     }
 
@@ -100,7 +100,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return rowcount;
     }
 
-    public int updateMcInfo(User userVO) {
+    public int updateMcInfo(Users userVO) {
         int rowcount = 0;
 
         StringBuilder sb = new StringBuilder();
@@ -124,7 +124,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
 
-    public int updateCAInfo(User userVO) {
+    public int updateCAInfo(Users userVO) {
         int rowcount = 0;
 
         StringBuilder sb = new StringBuilder();

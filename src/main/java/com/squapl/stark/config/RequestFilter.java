@@ -31,7 +31,7 @@ public class RequestFilter implements Filter {
         Set<String> allowedOrigins = new HashSet<String>(Arrays.asList(helper.getAllowedDomains()));
         String originHeader = request.getHeader("Origin");
         log.debug("originHeader::" + originHeader);
-
+        System.out.println("originHeader... " + originHeader);
         if (allowedOrigins.contains(originHeader)) {
             response.setHeader("Access-Control-Allow-Origin", originHeader);
         }
@@ -47,7 +47,7 @@ public class RequestFilter implements Filter {
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
         if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))) {
-
+            System.out.println("PREFLIGHT @ no else ");
             try {
                 chain.doFilter(req, res);
             } catch (Exception e) {
@@ -56,7 +56,7 @@ public class RequestFilter implements Filter {
         } else {
             log.debug("Pre-flight");
             System.out.println("PREFLIGHT @ ELSE");
-            response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, DELETE");
+            response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET,  DELETE");
             response.setHeader("Access-Control-Max-Age", "3600");
             response.setHeader("Access-Control-Expose-Headers", "Authorization, X-Foobar");
             response.setHeader("Access-Control-Allow-Headers", "authorization, content-type," +

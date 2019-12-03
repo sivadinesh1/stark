@@ -6,13 +6,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @DynamicUpdate
 @Entity
 @Data
+
 @Table(name = "center_details")
-public class Center {
+public class Center extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,16 +23,12 @@ public class Center {
 
 
     private String name;
-
+ 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private JsonNode details;
 
     private String isactive;
 
-    private long createdby;
-    private Date createddatetime;
-    private long updatedby;
-    private Date updateddatetime;
 
 }
